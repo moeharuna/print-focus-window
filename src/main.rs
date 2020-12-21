@@ -14,7 +14,7 @@ fn main()
         {
             Event::WindowEvent(e) =>
             {
-                if e.change==WindowChange::Focus {
+                if e.change==WindowChange::Focus || (e.change==WindowChange::Title && e.container.focused) {
                     match e.container.name {
                         Some(value) => println!("{}",value),
                         None => (),

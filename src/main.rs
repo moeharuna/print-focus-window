@@ -10,19 +10,25 @@ fn main()
     listener.subscribe(&[Subscription::Window]).unwrap();
     for event in listener.listen()
     {
-        match event.unwrap()
+        match event
         {
-            Event::WindowEvent(e) =>
+            Ok(event_type) =>
             {
-                if e.change==WindowChange::Focus || (e.change==WindowChange::Title && e.container.focused) {
-                    match e.container.name {
-                        Some(value) => println!("{}",value),
-                        None => (),
+                match event_type
+                {
+                    Event::WindowEvent(e) =>
+                    {
+                        if e.change==WindowChange::Focus || (e.change==WindowChange::Title && e.container.focused) {
+                            match e.container.name {
+                                Some(value) => println!("{}",value),
+                                None => (),
+                            }
+                        }
                     }
+                    _ => unreachable!()
                 }
             },
-            _ =>unreachable!()
+            Err(err) => (eprintln!("Err: {}", err.to_string())),
         }
     }
-
 }
